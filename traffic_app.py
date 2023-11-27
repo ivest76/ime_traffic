@@ -77,28 +77,24 @@ user_encoded_df = encode_dummy_df.tail(1)
 if ml_model == "Decision Tree":
     # Using DT to predict() with encoded user data
     new_prediction_dt = dt_model.predict(user_encoded_df)
-    new_prediction_prob_dt = dt_model.predict_proba(user_encoded_df).max()
     # Show the predicted cost range on the app
     st.write("Decision Tree Traffic Prediction: {}".format(*new_prediction_dt))
     
 elif ml_model == "AdaBoost":
     # Using AdaBoost to predict() with encoded user data
     new_prediction_dt = ad_model.predict(user_encoded_df)
-    new_prediction_prob_dt = ad_model.predict_proba(user_encoded_df).max()
     # Show the predicted cost range on the app
     st.write("AdaBoost Traffic Prediction: {}".format(*new_prediction_dt))
 
 elif ml_model == "XGBoost":
     # Using AdaBoost to predict() with encoded user data
     new_prediction_dt = xg_model.predict(user_encoded_df)
-    new_prediction_prob_dt = xg_model.predict_proba(user_encoded_df).max()
     # Show the predicted cost range on the app
     st.write("XGBoost Traffic Prediction: {}".format(*new_prediction_dt))
        
 else:
     # Using RF to predict() with encoded user data
     new_prediction_rf = rf_model.predict(user_encoded_df)
-    new_prediction_prob_rf = rf_model.predict_proba(user_encoded_df).max()
     # Show the predicted cost range on the app
     st.write("Random Forest Prediction: {}".format(*new_prediction_rf))
 
