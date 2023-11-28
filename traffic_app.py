@@ -43,6 +43,17 @@ default_df = pd.read_csv('traffic_clean.csv')
 default_df["holiday"].replace(np.nan, "None", inplace=True)
 default_df["holiday"] = default_df["holiday"].astype(str)
 
+#loading model metrics dataset
+metrics = pd.read_csv("metric.csv")
+#highlighting code
+def color_val(df):
+    if df["ML Model"] == "Decision Tree":
+        return ['background-color: limegreen']*3
+    elif df["ML Model"] == "AdaBoost":
+        return ['background-color: orange']*3
+    else:
+        return ''
+my_df = metrics.style.apply(color_val, axis=1)
 
 # User input form
 with st.form("user_inputs"):
@@ -60,6 +71,8 @@ with st.form("user_inputs"):
     ml_model = st.selectbox("Select model", options = ["Decision Tree", "Random Forest",
                                                     "AdaBoost", "XGBoost"],
                         placeholder = 'Choose an option')
+    st.write("These ML models exhibited the following predictive performance.")
+    st.dataframe(my_df)
     st.form_submit_button()
 
 encode_df = default_df.copy()
@@ -79,23 +92,35 @@ if ml_model == "Decision Tree":
     new_prediction_dt = dt_model.predict(user_encoded_df)
     # Show the predicted cost range on the app
     st.write("Decision Tree Traffic Prediction: {}".format(*new_prediction_dt))
+    # showing additional feature importance plot
+    st.subheader("Feature Importance")
+    st.image("dt_feature_imp.svg")
     
 elif ml_model == "AdaBoost":
     # Using AdaBoost to predict() with encoded user data
     new_prediction_dt = ad_model.predict(user_encoded_df)
     # Show the predicted cost range on the app
     st.write("AdaBoost Traffic Prediction: {}".format(*new_prediction_dt))
+    # showing additional feature importance plot
+    st.subheader("Feature Importance")
+    st.image("ad_feature_imp.svg")
 
 elif ml_model == "XGBoost":
     # Using AdaBoost to predict() with encoded user data
     new_prediction_dt = xg_model.predict(user_encoded_df)
     # Show the predicted cost range on the app
     st.write("XGBoost Traffic Prediction: {}".format(*new_prediction_dt))
+    # showing additional feature importance plot
+    st.subheader("Feature Importance")
+    st.image("xg_feature_imp.svg")
        
 else:
     # Using RF to predict() with encoded user data
     new_prediction_rf = rf_model.predict(user_encoded_df)
     # Show the predicted cost range on the app
     st.write("Random Forest Prediction: {}".format(*new_prediction_rf))
+    # showing additional feature importance plot
+    st.subheader("Feature Importance")
+    st.image("rf_feature_imp.svg")
 
 
